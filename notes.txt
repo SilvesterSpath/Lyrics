@@ -1,0 +1,4 @@
+
+	- to use data from a fetch later we can use the html5 'data attribute'-s in tags
+	- like: 
+<button class="btn" data-artist="${i.artist.name}" data-songtitle="${i.title}">Get Lyrics</button>
