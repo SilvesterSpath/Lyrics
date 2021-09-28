@@ -9,7 +9,6 @@ const apiUrl = 'https://api.lyrics.ovh';
 async function searchSongs(term) {
   const result = await fetch(`${apiUrl}/suggest/${term}`);
   const data = await result.json();
-  console.log(data);
 
   /* .then((res) => res.json())
     .then((data) => console.log(data)); */
@@ -18,14 +17,7 @@ async function searchSongs(term) {
 
 // Get prev and next results
 async function getMoreSongs(url) {
-  const result = await fetch(`https://spathcors.herokuapp.com/${url}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json, text/plain',
-      'Content-type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-  });
+  const result = await fetch(`https://spathcors.herokuapp.com/${url}`);
   const data = await result.json();
   console.log(data);
 
@@ -89,6 +81,20 @@ function showData(data) {
   }
 }
 
+// Get lyrics for song
+async function getLyrics(artist, songTitle) {
+  const results = await fetch(`${apiUrl}/v1/${artist}/${songTitle}`);
+  const data = await results.json();
+
+  const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>');
+  console.log(lyrics);
+
+  result.innerHTML = `<h2><strong>${artist}</strong> - ${songTitle}</h2>
+  <span>${lyrics}</span>`;
+
+  more.innerHTML = '';
+}
+
 // Event listeners
 formEl.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -100,4 +106,18 @@ formEl.addEventListener('submit', (e) => {
   } else {
     searchSongs(searchTerm);
   }
+});
+
+// Get lyrics button click
+result.addEventListener('click', (e) => {
+  const clickedEl = e.target;
+  console.log(clickedEl);
+  let artist;
+  let songTitle;
+
+  if (clickedEl.tagName === 'BUTTON') {
+    artist = clickedEl.getAttribute('data-artist');
+    songTitle = clickedEl.getAttribute('data-songtitle');
+  }
+  getLyrics(artist, songTitle);
 });
