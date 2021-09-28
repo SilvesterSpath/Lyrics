@@ -18,7 +18,14 @@ async function searchSongs(term) {
 
 // Get prev and next results
 async function getMoreSongs(url) {
-  const result = await fetch(`https://cors-anywhere.herokuapp.com/${url}`);
+  const result = await fetch(`https://spathcors.herokuapp.com/${url}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json, text/plain',
+      'Content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
   const data = await result.json();
   console.log(data);
 
